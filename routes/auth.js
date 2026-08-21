@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt")
 const Users = require("../models/auth")
 const { getRandomId } = require("../config/global")
 const { verifyToken } = require("../middlewares/auth")
+const { transporter } = require("../config/nodemailer")
 
 const router = express.Router()
 
@@ -21,6 +22,15 @@ router.post("/register", async (req, res) => {
 
         const newUser = Users(newUserData)
         await newUser.save()
+
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: email,
+            subject: "Registration successful",
+            text: `Welcome to our platform ${fullName}. Your registration has been successful by using this email id: ${email} and you can now login with the email id and password used for registration`,
+        }
+
+        await transporter.sendMail(mailOptions)
 
         res.status(201).json({ message: "A new user has been successfully registered", newUser })
     }
