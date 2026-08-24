@@ -13,7 +13,3 @@ const connectDB = async () => {
 }
 
 module.exports = { connectDB }
-
-
-// talhaiftikhar1100_db_user
-// Etrgx6RgnwuJ0H6m
